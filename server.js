@@ -6,26 +6,19 @@ console.log("starting node with express");
 
 var express = require('express');
 var openidmethods = require('./openidmethods');
+var static = require('serve-static');
+//var methodOverride = require('method-override');
 
-var app = module.exports = express.createServer();
+//var app = module.exports = express.createServer();
+var app = express();
 
 // Configuration
 
-app.configure(function() {
-    //app.set('views', __dirname + '/views'); //=> default
-    //app.set('view engine', 'jade');
-    app.set('view engine', 'ejs');
-    //app.set('view options', {layout: false});
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser());
-    app.use(express.session({
-        secret: "1234"
-    }));
-    //app.use(require('stylus').middleware({ src: __dirname + '/public' }));
-    app.use(app.router);
-    app.use(express.static(__dirname + '/public')); //=> static files under public
-});
+app.set('view engine', 'ejs');
+app.use(require('body-parser')());
+app.use(require('cookie-parser')());
+app.use(require('express-session')({secret: '1234', resave: false, saveUninitialized: true}));
+app.use(static(__dirname+'/public'));
 
 /*
 app.configure('development', function(){
@@ -83,7 +76,7 @@ app.get('/about', function(req,res){
 app.get('/authenticate', openidmethods.authenticate);
 
 app.get('/verify', openidmethods.verify);
-var port = process.env.port || process.env.PORT;
+var port = process.env.port || process.env.PORT || 3000;
 
 app.listen(port);
 
