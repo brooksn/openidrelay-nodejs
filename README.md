@@ -1,4 +1,4 @@
 openidrelay-nodejs
 ==================
 
-Nodejs version of an openId relaying party
+Nodejs version of an openId relying party
